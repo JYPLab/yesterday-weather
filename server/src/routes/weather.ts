@@ -1,6 +1,8 @@
 import { Router } from 'express';
 import { findRegion, LOCATION_CODES } from 'yesterday-weather-shared';
+import { config } from '../config.js';
 import { getWeatherComparison } from '../services/weatherService.js';
+import { getWeatherComparisonMock } from '../services/mockWeatherService.js';
 
 const router = Router();
 
@@ -18,10 +20,10 @@ router.get('/weather', async (req, res) => {
       return;
     }
 
-    const comparison = await getWeatherComparison(
-      region.code.nx,
-      region.code.ny
-    );
+    const comparison = config.mockMode
+      ? await getWeatherComparisonMock(region.code.nx, region.code.ny, regionName)
+      : await getWeatherComparison(region.code.nx, region.code.ny);
+
     res.json(comparison);
   } catch (error) {
     console.error('Weather API error:', error);
