@@ -1,3 +1,5 @@
+import 'dotenv/config';
+
 export const config = {
   port: parseInt(process.env.PORT || '3000', 10),
   kmaApiKey: process.env.KMA_API_KEY || '',
