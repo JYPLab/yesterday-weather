@@ -1,17 +1,27 @@
 import type { WeatherComparison, UserConfig } from 'yesterday-weather-shared';
+import { getMockWeather } from './mockData';
 
 const BASE = '/api';
 
 export async function getWeather(region: string): Promise<WeatherComparison> {
-  const res = await fetch(`${BASE}/weather?region=${encodeURIComponent(region)}`);
-  if (!res.ok) throw new Error('날씨 정보를 불러올 수 없습니다');
-  return res.json();
+  try {
+    const res = await fetch(`${BASE}/weather?region=${encodeURIComponent(region)}`);
+    if (!res.ok) throw new Error();
+    return await res.json();
+  } catch {
+    // API 없으면 mock 데이터 사용
+    return getMockWeather(region);
+  }
 }
 
 export async function getRegions(query: string = ''): Promise<Array<{ name: string; nx: number; ny: number }>> {
-  const res = await fetch(`${BASE}/regions?q=${encodeURIComponent(query)}`);
-  if (!res.ok) throw new Error('지역 목록을 불러올 수 없습니다');
-  return res.json();
+  try {
+    const res = await fetch(`${BASE}/regions?q=${encodeURIComponent(query)}`);
+    if (!res.ok) throw new Error();
+    return await res.json();
+  } catch {
+    return [];
+  }
 }
 
 export async function saveUserConfig(config: {
@@ -19,17 +29,25 @@ export async function saveUserConfig(config: {
   location: string;
   alarmHour: number;
 }): Promise<void> {
-  const res = await fetch(`${BASE}/user-config`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(config),
-  });
-  if (!res.ok) throw new Error('설정 저장에 실패했습니다');
+  try {
+    const res = await fetch(`${BASE}/user-config`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(config),
+    });
+    if (!res.ok) throw new Error();
+  } catch {
+    // 서버 없으면 무시 (localStorage로 처리)
+  }
 }
 
 export async function getUserConfig(userId: string): Promise<UserConfig | null> {
-  const res = await fetch(`${BASE}/user-config/${userId}`);
-  if (res.status === 404) return null;
-  if (!res.ok) throw new Error('설정을 불러올 수 없습니다');
-  return res.json();
+  try {
+    const res = await fetch(`${BASE}/user-config/${userId}`);
+    if (res.status === 404) return null;
+    if (!res.ok) throw new Error();
+    return await res.json();
+  } catch {
+    return null;
+  }
 }
