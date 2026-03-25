@@ -1,0 +1,62 @@
+import React, { useState } from 'react';
+import { Routes, Route, Navigate } from 'react-router-dom';
+import { useUserConfig } from './hooks/useUserConfig';
+import OnboardingRegionPage from './pages/OnboardingRegionPage';
+import OnboardingTimePage from './pages/OnboardingTimePage';
+import MainPage from './pages/MainPage';
+import SettingsPage from './pages/SettingsPage';
+
+export default function App() {
+  const { config, isOnboarded, saveConfig, updateLocation, updateAlarmHour } =
+    useUserConfig();
+  const [selectedRegion, setSelectedRegion] = useState('');
+
+  if (!isOnboarded) {
+    return (
+      <Routes>
+        <Route
+          path="/onboarding/region"
+          element={
+            <OnboardingRegionPage onSelectRegion={setSelectedRegion} />
+          }
+        />
+        <Route
+          path="/onboarding/time"
+          element={
+            <OnboardingTimePage
+              selectedRegion={selectedRegion}
+              onComplete={(hour) => saveConfig(selectedRegion, hour)}
+            />
+          }
+        />
+        <Route path="*" element={<Navigate to="/onboarding/region" replace />} />
+      </Routes>
+    );
+  }
+
+  return (
+    <Routes>
+      <Route
+        path="/"
+        element={
+          <MainPage
+            location={config!.location}
+            alarmHour={config!.alarmHour}
+          />
+        }
+      />
+      <Route
+        path="/settings"
+        element={
+          <SettingsPage
+            location={config!.location}
+            alarmHour={config!.alarmHour}
+            onChangeLocation={updateLocation}
+            onChangeAlarmHour={updateAlarmHour}
+          />
+        }
+      />
+      <Route path="*" element={<Navigate to="/" replace />} />
+    </Routes>
+  );
+}

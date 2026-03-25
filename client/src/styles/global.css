@@ -1,0 +1,271 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+    'Helvetica Neue', Arial, sans-serif;
+  background: #ffffff;
+  color: #191f28;
+  max-width: 375px;
+  margin: 0 auto;
+  min-height: 100vh;
+}
+
+.page {
+  padding: 0 20px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.navigation {
+  display: flex;
+  align-items: center;
+  height: 56px;
+  font-size: 18px;
+  font-weight: 600;
+  border-bottom: 1px solid #f2f4f6;
+  margin: 0 -20px;
+  padding: 0 20px;
+}
+
+.navigation-back {
+  cursor: pointer;
+  margin-right: 12px;
+  font-size: 20px;
+}
+
+.title {
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 1.4;
+  margin-top: 32px;
+}
+
+.subtitle {
+  font-size: 15px;
+  color: #8b95a1;
+  margin-top: 8px;
+  line-height: 1.5;
+}
+
+.search-input {
+  width: 100%;
+  height: 48px;
+  background: #f2f4f6;
+  border: none;
+  border-radius: 12px;
+  padding: 0 16px;
+  font-size: 16px;
+  margin-top: 24px;
+  outline: none;
+}
+
+.search-input::placeholder {
+  color: #8b95a1;
+}
+
+.list-row {
+  display: flex;
+  align-items: center;
+  padding: 16px 0;
+  border-bottom: 1px solid #f2f4f6;
+  cursor: pointer;
+}
+
+.list-row:hover {
+  background: #f8f9fa;
+  margin: 0 -20px;
+  padding: 16px 20px;
+}
+
+.list-row-text {
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.list-row-sub {
+  font-size: 14px;
+  color: #8b95a1;
+  margin-left: auto;
+}
+
+.cta-button {
+  width: 100%;
+  height: 54px;
+  border-radius: 16px;
+  border: none;
+  background: #3182f6;
+  color: white;
+  font-size: 17px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: auto;
+  margin-bottom: 34px;
+}
+
+.cta-button:disabled {
+  background: #e5e8eb;
+  color: #adb5bd;
+}
+
+.cta-button:active:not(:disabled) {
+  background: #1b64da;
+}
+
+/* Time Picker */
+.time-picker {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 40px;
+  font-size: 48px;
+  font-weight: 300;
+}
+
+.time-picker select {
+  appearance: none;
+  background: #f2f4f6;
+  border: none;
+  border-radius: 12px;
+  padding: 12px 20px;
+  font-size: 48px;
+  font-weight: 300;
+  text-align: center;
+  cursor: pointer;
+  outline: none;
+}
+
+/* Main Weather Card */
+.weather-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 24px;
+  font-size: 14px;
+  color: #8b95a1;
+}
+
+.weather-emoji {
+  font-size: 48px;
+  margin-top: 24px;
+}
+
+.weather-desc {
+  font-size: 22px;
+  font-weight: 700;
+  margin-top: 12px;
+}
+
+.weather-temp {
+  font-size: 15px;
+  color: #4e5968;
+  margin-top: 8px;
+}
+
+.weather-delta {
+  font-size: 14px;
+  color: #3182f6;
+  margin-top: 4px;
+}
+
+.weather-delta.cold {
+  color: #3182f6;
+}
+
+.weather-delta.warm {
+  color: #f04452;
+}
+
+/* Session Cards */
+.session-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 32px;
+}
+
+.session-card {
+  background: #f8f9fa;
+  border-radius: 16px;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.session-emoji {
+  font-size: 28px;
+}
+
+.session-label {
+  font-size: 14px;
+  color: #8b95a1;
+}
+
+.session-text {
+  font-size: 16px;
+  font-weight: 600;
+  margin-top: 2px;
+}
+
+/* Settings */
+.settings-section {
+  margin-top: 24px;
+}
+
+.settings-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 0;
+  border-bottom: 1px solid #f2f4f6;
+  cursor: pointer;
+}
+
+.settings-label {
+  font-size: 16px;
+}
+
+.settings-value {
+  font-size: 16px;
+  color: #8b95a1;
+}
+
+.settings-arrow {
+  color: #d1d6db;
+  margin-left: 8px;
+}
+
+/* Loading */
+.loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 300px;
+  font-size: 16px;
+  color: #8b95a1;
+}
+
+.error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 300px;
+  gap: 12px;
+  color: #8b95a1;
+}
+
+.error button {
+  padding: 8px 20px;
+  border-radius: 8px;
+  border: 1px solid #e5e8eb;
+  background: white;
+  cursor: pointer;
+  font-size: 14px;
+}
