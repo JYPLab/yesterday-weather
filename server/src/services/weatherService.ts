@@ -1,5 +1,5 @@
 import { calcDelta, buildEmoji, buildDesc, buildTempSuffix } from 'yesterday-weather-shared';
-import type { WeatherComparison, SessionDelta } from 'yesterday-weather-shared';
+import type { WeatherComparison, SessionDelta, SessionWeather } from 'yesterday-weather-shared';
 import { getVilageFcst } from '../api/kma.js';
 import { transformForecast } from '../api/transform.js';
 import { getCachedWeather, setCachedWeather } from './cacheService.js';
@@ -11,40 +11,69 @@ function formatDate(date: Date): string {
   return `${y}${m}${d}`;
 }
 
-function getYesterday(): Date {
-  const d = new Date();
-  d.setDate(d.getDate() - 1);
+function addDays(date: Date, days: number): Date {
+  const d = new Date(date);
+  d.setDate(d.getDate() + days);
   return d;
 }
 
 /**
- * 적절한 base_time 결정 (가장 최근 발표 시간)
+ * 현재 시각 기준 가장 최근 단기예보 발표 시각과 base_date 결정
+ *
+ * 단기예보 발표시각: 0200, 0500, 0800, 1100, 1400, 1700, 2000, 2300
+ * API는 발표 후 약 10분부터 제공
+ * 0시~2시 10분 사이에는 전날 2300 발표분 사용 (base_date도 전날)
  */
-function getBaseTime(): string {
-  const hour = new Date().getHours();
-  const baseTimes = [23, 20, 17, 14, 11, 8, 5, 2];
+function getLatestBase(now: Date): { baseDate: string; baseTime: string } {
+  const hour = now.getHours();
+  const minute = now.getMinutes();
+  const currentMinutes = hour * 60 + minute;
+
+  // 발표 시각 (분 단위) + 10분 여유
+  const baseTimes = [
+    { time: '2300', minutes: 23 * 60 + 10 },
+    { time: '2000', minutes: 20 * 60 + 10 },
+    { time: '1700', minutes: 17 * 60 + 10 },
+    { time: '1400', minutes: 14 * 60 + 10 },
+    { time: '1100', minutes: 11 * 60 + 10 },
+    { time: '0800', minutes: 8 * 60 + 10 },
+    { time: '0500', minutes: 5 * 60 + 10 },
+    { time: '0200', minutes: 2 * 60 + 10 },
+  ];
+
   for (const bt of baseTimes) {
-    if (hour >= bt) return String(bt).padStart(2, '0') + '00';
+    if (currentMinutes >= bt.minutes) {
+      return { baseDate: formatDate(now), baseTime: bt.time };
+    }
   }
-  return '2300'; // 자정~2시: 전날 23시 발표분
+
+  // 0시~2시10분: 전날 2300 발표분
+  return { baseDate: formatDate(addDays(now, -1)), baseTime: '2300' };
+}
+
+/**
+ * 어제 데이터용 base 결정
+ * 어제 날짜의 가장 늦은 예보(2300)를 사용하면 어제 하루치 데이터가 모두 포함
+ */
+function getYesterdayBase(now: Date): { baseDate: string; baseTime: string } {
+  const yesterday = addDays(now, -1);
+  return { baseDate: formatDate(yesterday), baseTime: '2300' };
 }
 
 async function getWeatherForDate(
   nx: number,
   ny: number,
-  date: Date
-): Promise<ReturnType<typeof transformForecast>> {
-  const dateStr = formatDate(date);
-
-  const cached = await getCachedWeather(nx, ny, dateStr);
+  targetDate: string,
+  baseDate: string,
+  baseTime: string
+): Promise<SessionWeather> {
+  const cached = await getCachedWeather(nx, ny, targetDate);
   if (cached) return cached;
 
-  const baseTime = getBaseTime();
-  // 어제 데이터는 어제 날짜의 0500 기준 예보 사용
-  const items = await getVilageFcst(nx, ny, dateStr, baseTime);
-  const result = transformForecast(items, dateStr);
+  const items = await getVilageFcst(nx, ny, baseDate, baseTime);
+  const result = transformForecast(items, targetDate);
 
-  await setCachedWeather(nx, ny, dateStr, result);
+  await setCachedWeather(nx, ny, targetDate, result);
   return result;
 }
 
@@ -52,20 +81,21 @@ export async function getWeatherComparison(
   nx: number,
   ny: number
 ): Promise<WeatherComparison> {
-  const today = new Date();
-  const yesterday = getYesterday();
+  const now = new Date();
+  const todayStr = formatDate(now);
+  const yesterdayStr = formatDate(addDays(now, -1));
+
+  const todayBase = getLatestBase(now);
+  const yesterdayBase = getYesterdayBase(now);
 
   const [todayWeather, yesterdayWeather] = await Promise.all([
-    getWeatherForDate(nx, ny, today),
-    getWeatherForDate(nx, ny, yesterday),
+    getWeatherForDate(nx, ny, todayStr, todayBase.baseDate, todayBase.baseTime),
+    getWeatherForDate(nx, ny, yesterdayStr, yesterdayBase.baseDate, yesterdayBase.baseTime),
   ]);
 
   const delta: SessionDelta = {
     morning: calcDelta(yesterdayWeather.morning, todayWeather.morning),
-    afternoon: calcDelta(
-      yesterdayWeather.afternoon,
-      todayWeather.afternoon
-    ),
+    afternoon: calcDelta(yesterdayWeather.afternoon, todayWeather.afternoon),
     daily: calcDelta(yesterdayWeather.daily, todayWeather.daily),
   };
 
