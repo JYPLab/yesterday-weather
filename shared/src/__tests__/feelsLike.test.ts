@@ -19,9 +19,9 @@ describe('calcFeelsLikeCold', () => {
 });
 
 describe('calcFeelsLikeHot', () => {
-  it('calculates heat index', () => {
-    const result = calcFeelsLikeHot(30, 80);
-    expect(result).toBeGreaterThan(30);
+  it('calculates heat index for high temps', () => {
+    const result = calcFeelsLikeHot(35, 80);
+    expect(result).toBeGreaterThan(35);
   });
 });
 
@@ -31,8 +31,18 @@ describe('calcFeelsLike', () => {
     expect(result).toBeLessThan(5);
   });
 
-  it('uses hot formula for above 10°C', () => {
-    const result = calcFeelsLike(30, 3, 80);
-    expect(result).toBeGreaterThan(25);
+  it('returns raw temp for 10~33°C range', () => {
+    const result = calcFeelsLike(20, 3, 60);
+    expect(result).toBe(20);
+  });
+
+  it('returns raw temp at 11°C (no heat index applied)', () => {
+    const result = calcFeelsLike(11, 2.5, 52);
+    expect(result).toBe(11);
+  });
+
+  it('uses hot formula for 33°C and above', () => {
+    const result = calcFeelsLike(35, 3, 80);
+    expect(result).toBeGreaterThan(35);
   });
 });
