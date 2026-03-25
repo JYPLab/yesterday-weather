@@ -9,9 +9,11 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@tailwindcss/vite": "^4.2.2",
     "react": "^18.3.0",
     "react-dom": "^18.3.0",
     "react-router-dom": "^6.26.0",
+    "tailwindcss": "^4.2.2",
     "yesterday-weather-shared": "*"
   },
   "devDependencies": {

@@ -16,9 +16,7 @@ export default function App() {
       <Routes>
         <Route
           path="/onboarding/region"
-          element={
-            <OnboardingRegionPage onSelectRegion={setSelectedRegion} />
-          }
+          element={<OnboardingRegionPage onSelectRegion={setSelectedRegion} />}
         />
         <Route
           path="/onboarding/time"
@@ -38,12 +36,7 @@ export default function App() {
     <Routes>
       <Route
         path="/"
-        element={
-          <MainPage
-            location={config!.location}
-            alarmHour={config!.alarmHour}
-          />
-        }
+        element={<MainPage location={config!.location} alarmHour={config!.alarmHour} />}
       />
       <Route
         path="/settings"
