@@ -106,14 +106,24 @@ describe('buildDesc', () => {
     expect(buildDesc(delta)).toBe('많이 따뜻해요');
   });
 
-  it('includes rain', () => {
+  it('includes rain with correct grammar', () => {
     const delta = { ...baseDelta, feelsLikeDelta: -3, newRain: true };
-    expect(buildDesc(delta)).toBe('쌀쌀해고 비 와요');
+    expect(buildDesc(delta)).toBe('쌀쌀하고 비 와요');
   });
 
-  it('includes wind', () => {
+  it('includes wind with correct grammar', () => {
     const delta = { ...baseDelta, feelsLikeDelta: -6, newWind: true };
-    expect(buildDesc(delta)).toBe('많이 추워고 바람 강해요');
+    expect(buildDesc(delta)).toBe('춥고 바람 강해요');
+  });
+
+  it('includes snow with correct grammar', () => {
+    const delta = { ...baseDelta, feelsLikeDelta: -6, newSnow: true };
+    expect(buildDesc(delta)).toBe('춥고 눈 와요');
+  });
+
+  it('similar + rain', () => {
+    const delta = { ...baseDelta, feelsLikeDelta: 0, newRain: true };
+    expect(buildDesc(delta)).toBe('비슷한데 비 와요');
   });
 });
 

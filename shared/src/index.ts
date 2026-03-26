@@ -16,7 +16,7 @@ export {
   findRegion,
   searchRegions,
 } from './constants/regions.js';
-export { TEMP_EMOJI, CONDITION_EMOJI, TEMP_TEXT } from './constants/emoji.js';
+export { TEMP_EMOJI, CONDITION_EMOJI, TEMP_TEXT, TEMP_TEXT_CONNECTIVE } from './constants/emoji.js';
 
 // Utils
 export {

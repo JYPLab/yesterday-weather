@@ -1,4 +1,4 @@
-import { TEMP_EMOJI, CONDITION_EMOJI, TEMP_TEXT } from '../constants/emoji.js';
+import { TEMP_EMOJI, CONDITION_EMOJI, TEMP_TEXT, TEMP_TEXT_CONNECTIVE } from '../constants/emoji.js';
 import type { Delta } from '../types/weather.js';
 
 type TempLevel = 'MUCH_COLDER' | 'COLDER' | 'SIMILAR' | 'WARMER' | 'MUCH_WARMER';
@@ -44,15 +44,18 @@ export function buildEmoji(delta: Delta): string {
   return emoji;
 }
 
+export function getTempConnective(feelsLikeDelta: number): string {
+  return TEMP_TEXT_CONNECTIVE[getTempLevel(feelsLikeDelta)];
+}
+
 /**
  * 알림 텍스트 설명 부분
  */
 export function buildDesc(delta: Delta): string {
-  const tempText = getTempText(delta.feelsLikeDelta);
-  if (delta.newSnow) return `${tempText}고 눈 와요`;
-  if (delta.newRain) return `${tempText}고 비 와요`;
-  if (delta.newWind) return `${tempText}고 바람 강해요`;
-  return `${tempText}요`;
+  if (delta.newSnow) return `${getTempConnective(delta.feelsLikeDelta)} 눈 와요`;
+  if (delta.newRain) return `${getTempConnective(delta.feelsLikeDelta)} 비 와요`;
+  if (delta.newWind) return `${getTempConnective(delta.feelsLikeDelta)} 바람 강해요`;
+  return `${getTempText(delta.feelsLikeDelta)}요`;
 }
 
 /**
