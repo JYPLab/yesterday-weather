@@ -51,43 +51,45 @@ export default function OnboardingRegionPage({ onSelectRegion }: Props) {
           </div>
         </section>
 
-        {/* Region List */}
-        <section>
-          <div className="flex items-center justify-between mb-6">
-            <h3 className="font-bold text-on-surface-variant text-sm tracking-wide">
-              {query ? '검색 결과' : '지역 목록'}
-            </h3>
-          </div>
+        {/* Region List — 검색 시에만 표시 */}
+        {query.length > 0 && (
+          <section>
+            <div className="flex items-center justify-between mb-6">
+              <h3 className="font-bold text-on-surface-variant text-sm tracking-wide">
+                검색 결과
+              </h3>
+            </div>
 
-          <div className="space-y-4">
-            {results.map((region) => (
-              <div
-                key={region.name}
-                onClick={() => handleSelect(region.name)}
-                className="group flex items-center gap-4 p-4 rounded-xl bg-surface-container-lowest hover:bg-surface-container-low transition-all duration-200 active:scale-[0.98] cursor-pointer"
-              >
-                <div className="w-10 h-10 rounded-lg bg-surface-container-highest flex items-center justify-center">
-                  <Icon
-                    name="location_on"
-                    className="text-on-surface-variant group-hover:text-primary transition-colors"
-                  />
+            <div className="space-y-4">
+              {results.map((region) => (
+                <div
+                  key={region.name}
+                  onClick={() => handleSelect(region.name)}
+                  className="group flex items-center gap-4 p-4 rounded-xl bg-surface-container-lowest hover:bg-surface-container-low transition-all duration-200 active:scale-[0.98] cursor-pointer"
+                >
+                  <div className="w-10 h-10 rounded-lg bg-surface-container-highest flex items-center justify-center">
+                    <Icon
+                      name="location_on"
+                      className="text-on-surface-variant group-hover:text-primary transition-colors"
+                    />
+                  </div>
+                  <div className="flex-1">
+                    <p className="font-bold text-on-surface text-base">
+                      {region.name}
+                    </p>
+                  </div>
+                  <Icon name="chevron_right" className="text-outline text-lg" />
                 </div>
-                <div className="flex-1">
-                  <p className="font-bold text-on-surface text-base">
-                    {region.name}
-                  </p>
-                </div>
-                <Icon name="chevron_right" className="text-outline text-lg" />
-              </div>
-            ))}
+              ))}
 
-            {results.length === 0 && (
-              <div className="text-center py-8 text-outline">
-                검색 결과가 없습니다
-              </div>
-            )}
-          </div>
-        </section>
+              {results.length === 0 && (
+                <div className="text-center py-8 text-outline">
+                  검색 결과가 없습니다
+                </div>
+              )}
+            </div>
+          </section>
+        )}
       </div>
     </div>
   );
