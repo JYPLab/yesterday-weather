@@ -34,7 +34,7 @@ export default function MainPage({ location, alarmHour, alarmMinute }: Props) {
         }
       />
 
-      <main className="pt-32 px-6">
+      <main className="pt-4 px-6">
         {/* Location Bar */}
         <div className="flex items-center gap-1.5 py-3 px-5 bg-surface-container-low rounded-full w-fit mb-6">
           <Icon name="location_on" className="text-[16px] text-outline" />

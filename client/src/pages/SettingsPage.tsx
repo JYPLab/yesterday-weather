@@ -41,7 +41,7 @@ export default function SettingsPage({
     return (
       <div className="min-h-screen bg-surface flex flex-col">
         <TopAppBar title="지역 변경" showBack onBack={() => setEditingField(null)} />
-        <div className="pt-32 px-8 pb-8">
+        <div className="pt-4 px-8 pb-8">
           <div className="relative flex items-center group mb-6">
             <Icon name="search" className="absolute left-4 text-outline group-focus-within:text-primary transition-colors" />
             <input
@@ -85,7 +85,7 @@ export default function SettingsPage({
     return (
       <div className="min-h-screen bg-surface flex flex-col">
         <TopAppBar title="알림 시간 변경" showBack onBack={() => setEditingField(null)} />
-        <div className="pt-32 px-8 flex-1 flex flex-col items-center justify-center">
+        <div className="pt-4 px-8 flex-1 flex flex-col items-center justify-center">
           <div className="bg-surface-container-low rounded-[2.5rem] p-10 flex flex-col items-center gap-6 w-full">
             {/* AM/PM Toggle */}
             <div className="flex bg-surface-container-highest rounded-full p-1 gap-1">
@@ -147,7 +147,7 @@ export default function SettingsPage({
     <div className="min-h-screen bg-surface flex flex-col relative">
       <TopAppBar title="설정" showBack onBack={() => navigate('/')} />
 
-      <main className="flex-1 pt-32 px-6 pb-28">
+      <main className="flex-1 pt-4 px-6 pb-28">
         {/* Settings Section */}
         <section className="space-y-2">
           <h2 className="text-on-surface-variant font-headline font-bold text-[14px] uppercase tracking-widest px-1 mb-4">
