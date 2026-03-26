@@ -63,21 +63,18 @@ export default function MainPage({ location, alarmHour }: Props) {
         {data && (
           <>
             {/* Hero Weather Card */}
-            <section className="bg-[#E3F2FD] rounded-[2rem] p-8 mb-8 relative overflow-hidden shadow-sm">
-              <div className="absolute -right-4 -top-4 w-32 h-32 bg-white/20 rounded-full blur-2xl"></div>
-              <div className="relative z-10">
-                <div className="text-[36px] mb-4">{data.emoji}</div>
-                <h2 className="font-headline font-extrabold text-[24px] text-on-surface leading-tight tracking-tight mb-2">
-                  {data.description}
-                </h2>
-                <p className="text-on-surface-variant font-medium text-[15px]">
-                  최저 {Math.round(data.today.daily.tempMin)}°C / 최고{' '}
-                  {Math.round(data.today.daily.tempMax)}°C{' '}
-                  <span className="ml-1 text-primary font-bold">
-                    어제보다 {data.tempSuffix}
-                  </span>
-                </p>
-              </div>
+            <section className="bg-[#E3F2FD] rounded-[2rem] p-8 mb-8 relative shadow-sm">
+              <div className="text-[48px] leading-none mb-4">{data.emoji}</div>
+              <h2 className="font-headline font-extrabold text-[24px] text-on-surface leading-tight tracking-tight mb-3">
+                {data.description}
+              </h2>
+              <p className="text-on-surface-variant font-medium text-[15px]">
+                최저 {Math.round(data.today.daily.tempMin)}°C / 최고{' '}
+                {Math.round(data.today.daily.tempMax)}°C
+              </p>
+              <p className="text-primary font-bold text-[15px] mt-1">
+                어제보다 {data.tempSuffix}
+              </p>
             </section>
 
             {/* Morning / Afternoon */}
