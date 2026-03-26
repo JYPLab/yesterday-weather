@@ -3,7 +3,13 @@
   "outputDirectory": "client/dist",
   "installCommand": "npm install",
   "framework": null,
+  "functions": {
+    "api/*.ts": {
+      "maxDuration": 30
+    }
+  },
   "rewrites": [
+    { "source": "/api/weather", "destination": "/api/weather" },
     { "source": "/(.*)", "destination": "/index.html" }
   ]
 }
