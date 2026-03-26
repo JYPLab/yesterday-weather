@@ -75,7 +75,7 @@ export default function OnboardingTimePage({ selectedRegion, onComplete }: Props
       </main>
 
       {/* CTA */}
-      <div className="fixed bottom-0 w-full max-w-[375px] px-6 pb-10 pt-4 bg-gradient-to-t from-surface via-surface to-transparent">
+      <div className="fixed bottom-0 w-full max-w-[480px] px-6 pb-10 pt-4 bg-gradient-to-t from-surface via-surface to-transparent">
         <button
           onClick={handleStart}
           className="w-full h-16 bg-gradient-to-tr from-primary to-primary-container text-on-primary font-bold text-[17px] rounded-xl shadow-[0px_8px_24px_rgba(0,89,185,0.15)] active:scale-95 transition-transform duration-200"

@@ -18,7 +18,7 @@ export default function TopAppBar({ title, showBack = false, onBack, trailing }:
   };
 
   return (
-    <header className="fixed top-0 w-full max-w-[375px] z-50 bg-surface flex items-center px-6 h-16">
+    <header className="fixed top-0 w-full max-w-[480px] z-50 bg-surface flex items-center px-6 h-16">
       <div className="flex items-center w-full justify-between">
         <div className="flex items-center gap-4">
           {showBack && (
