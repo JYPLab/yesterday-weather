@@ -38,8 +38,6 @@ body {
   -webkit-font-smoothing: antialiased;
   background: var(--color-surface);
   color: var(--color-on-surface);
-  display: flex;
-  justify-content: center;
   min-height: 100dvh;
 }
 
@@ -49,7 +47,6 @@ h1, h2, h3 {
 
 #root {
   width: 100%;
-  max-width: 480px;
   min-height: 100dvh;
   position: relative;
   display: flex;
