@@ -63,12 +63,12 @@ export default function MainPage({ location, alarmHour }: Props) {
         {data && (
           <>
             {/* Hero Weather Card */}
-            <section className="bg-[#E3F2FD] rounded-[2rem] p-8 mb-8 relative shadow-sm">
-              <div className="text-[48px] leading-none mb-4">{data.emoji}</div>
-              <h2 className="font-headline font-extrabold text-[24px] text-on-surface leading-tight tracking-tight mb-3">
-                {data.description}
+            <section className="bg-[#E3F2FD] rounded-[2rem] p-8 mb-8 shadow-sm">
+              <div className="text-[56px] leading-none mb-5" style={{ lineHeight: 1.2 }}>{data.emoji}</div>
+              <h2 className="font-headline font-extrabold text-[22px] text-on-surface leading-tight tracking-tight mb-2">
+                어제보다 {data.description}
               </h2>
-              <p className="text-on-surface-variant font-medium text-[15px]">
+              <p className="text-on-surface-variant font-medium text-[15px] mt-3">
                 최저 {Math.round(data.today.daily.tempMin)}°C / 최고{' '}
                 {Math.round(data.today.daily.tempMax)}°C
               </p>
@@ -78,44 +78,30 @@ export default function MainPage({ location, alarmHour }: Props) {
             </section>
 
             {/* Morning / Afternoon */}
-            <section className="space-y-4 mb-10">
-              <div className="bg-surface-container-lowest p-5 rounded-xl flex justify-between items-center transition-all active:scale-[0.98]">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 bg-surface-container-high rounded-lg flex items-center justify-center">
-                    <span className="text-sm font-bold text-on-surface-variant">오전</span>
+            <section className="space-y-3 mb-10">
+              {[
+                { label: '오전', delta: data.delta.morning, temp: data.today.morning.temperature },
+                { label: '오후', delta: data.delta.afternoon, temp: data.today.afternoon.temperature },
+              ].map(({ label, delta: d, temp }) => (
+                <div key={label} className="bg-surface-container-lowest p-5 rounded-xl flex justify-between items-center">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 bg-surface-container-high rounded-lg flex items-center justify-center">
+                      <span className="text-sm font-bold text-on-surface-variant">{label}</span>
+                    </div>
+                    <div>
+                      <span className="text-on-surface font-bold text-[15px]">
+                        {Math.round(temp)}°C
+                      </span>
+                    </div>
                   </div>
-                </div>
-                <div className="flex items-center gap-2">
-                  <span className="text-on-surface font-semibold tracking-tight">
-                    {getTempEmoji(data.delta.morning.feelsLikeDelta)} 어제보다{' '}
-                    {Math.abs(Math.round(data.delta.morning.feelsLikeDelta))}도{' '}
-                    {data.delta.morning.feelsLikeDelta < 0
-                      ? '추워'
-                      : data.delta.morning.feelsLikeDelta > 0
-                        ? '따뜻'
-                        : '비슷'}
+                  <span className="text-on-surface-variant font-medium text-sm">
+                    {getTempEmoji(d.feelsLikeDelta)}{' '}
+                    {d.feelsLikeDelta === 0
+                      ? '어제와 비슷'
+                      : `어제보다 ${Math.abs(Math.round(d.feelsLikeDelta))}도 ${d.feelsLikeDelta < 0 ? '추워요' : '따뜻해요'}`}
                   </span>
                 </div>
-              </div>
-
-              <div className="bg-surface-container-lowest p-5 rounded-xl flex justify-between items-center transition-all active:scale-[0.98]">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 bg-surface-container-high rounded-lg flex items-center justify-center">
-                    <span className="text-sm font-bold text-on-surface-variant">오후</span>
-                  </div>
-                </div>
-                <div className="flex items-center gap-2">
-                  <span className="text-on-surface font-semibold tracking-tight">
-                    {getTempEmoji(data.delta.afternoon.feelsLikeDelta)} 어제보다{' '}
-                    {Math.abs(Math.round(data.delta.afternoon.feelsLikeDelta))}도{' '}
-                    {data.delta.afternoon.feelsLikeDelta < 0
-                      ? '추워'
-                      : data.delta.afternoon.feelsLikeDelta > 0
-                        ? '따뜻'
-                        : '비슷'}
-                  </span>
-                </div>
-              </div>
+              ))}
             </section>
 
             {/* Hourly Grid */}
@@ -150,6 +136,9 @@ export default function MainPage({ location, alarmHour }: Props) {
             <footer className="text-center">
               <p className="text-[13px] text-outline font-medium tracking-tight">
                 {ampm} {displayHour}시 날씨 기준
+              </p>
+              <p className="text-[11px] text-outline-variant mt-1">
+                샘플 데이터 (서버 연결 시 실제 날씨 표시)
               </p>
             </footer>
           </>

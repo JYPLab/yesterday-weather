@@ -22,26 +22,28 @@ export default function OnboardingRegionPage({ onSelectRegion }: Props) {
     <div className="min-h-screen bg-surface flex flex-col relative overflow-hidden">
       <TopAppBar title="날씨 알림" showBack />
 
-      <div className="pt-24 px-8 flex-1 pb-24">
-        {/* Hero Section */}
-        <section className="mb-10">
-          <h2 className="text-2xl font-bold font-headline text-on-surface mb-3 leading-tight">
-            어느 지역 날씨를<br />알려드릴까요?
+      <main className="flex-1 px-8 pt-24 pb-32 flex flex-col">
+        {/* Hero */}
+        <section className="mb-12">
+          <h2 className="text-[28px] font-bold leading-tight tracking-tight text-on-surface mb-3 font-headline">
+            어느 지역 날씨를
+            <br />
+            알려드릴까요?
           </h2>
-          <p className="text-on-surface-variant font-medium text-sm">
+          <p className="text-on-surface-variant text-[17px] font-medium leading-relaxed">
             매일 아침 해당 지역 날씨를 보내드려요
           </p>
         </section>
 
         {/* Search Bar */}
-        <section className="mb-12">
+        <section className="mb-8">
           <div className="relative flex items-center group">
             <Icon
               name="search"
               className="absolute left-4 text-outline group-focus-within:text-primary transition-colors"
             />
             <input
-              className="w-full bg-surface-container-high border-none rounded-full py-4 pl-12 pr-6 text-on-surface placeholder:text-outline focus:ring-2 focus:ring-primary/10 focus:bg-surface-container-lowest transition-all duration-300 outline-none"
+              className="w-full bg-surface-container-high border-none rounded-full py-4 pl-12 pr-6 text-on-surface placeholder:text-outline focus:ring-2 focus:ring-primary/10 focus:bg-surface-container-lowest transition-all duration-300 outline-none text-[16px]"
               placeholder="지역명으로 검색"
               type="text"
               value={query}
@@ -53,14 +55,12 @@ export default function OnboardingRegionPage({ onSelectRegion }: Props) {
 
         {/* Region List — 검색 시에만 표시 */}
         {query.length > 0 && (
-          <section>
-            <div className="flex items-center justify-between mb-6">
-              <h3 className="font-bold text-on-surface-variant text-sm tracking-wide">
-                검색 결과
-              </h3>
-            </div>
+          <section className="flex-1">
+            <h3 className="font-bold text-on-surface-variant text-sm tracking-wide mb-4">
+              검색 결과
+            </h3>
 
-            <div className="space-y-4">
+            <div className="space-y-3">
               {results.map((region) => (
                 <div
                   key={region.name}
@@ -73,11 +73,9 @@ export default function OnboardingRegionPage({ onSelectRegion }: Props) {
                       className="text-on-surface-variant group-hover:text-primary transition-colors"
                     />
                   </div>
-                  <div className="flex-1">
-                    <p className="font-bold text-on-surface text-base">
-                      {region.name}
-                    </p>
-                  </div>
+                  <p className="font-bold text-on-surface text-base flex-1">
+                    {region.name}
+                  </p>
                   <Icon name="chevron_right" className="text-outline text-lg" />
                 </div>
               ))}
@@ -90,7 +88,19 @@ export default function OnboardingRegionPage({ onSelectRegion }: Props) {
             </div>
           </section>
         )}
-      </div>
+
+        {/* 검색 전 빈 상태 */}
+        {query.length === 0 && (
+          <section className="flex-1 flex flex-col items-center justify-center">
+            <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mb-4">
+              <Icon name="location_on" className="text-primary text-2xl" />
+            </div>
+            <p className="text-on-surface-variant text-sm text-center">
+              시/군/구 이름을 검색해 주세요
+            </p>
+          </section>
+        )}
+      </main>
     </div>
   );
 }
