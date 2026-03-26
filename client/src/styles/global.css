@@ -27,10 +27,14 @@
 }
 
 * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
   -webkit-tap-highlight-color: transparent;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+input, textarea {
+  -webkit-user-select: auto;
+  user-select: auto;
 }
 
 body {
@@ -39,6 +43,7 @@ body {
   background: var(--color-surface);
   color: var(--color-on-surface);
   min-height: 100dvh;
+  overscroll-behavior-y: none;
 }
 
 h1, h2, h3 {
