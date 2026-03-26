@@ -5,28 +5,30 @@ import Icon from '../components/Icon';
 
 interface Props {
   selectedRegion: string;
-  onComplete: (hour: number) => void;
+  onComplete: (hour: number, minute: number) => void;
 }
 
 export default function OnboardingTimePage({ selectedRegion, onComplete }: Props) {
-  const [hour, setHour] = useState(7);
+  const [hour12, setHour12] = useState(7);
+  const [minute, setMinute] = useState(0);
+  const [isAm, setIsAm] = useState(true);
   const navigate = useNavigate();
 
   const handleStart = () => {
-    onComplete(hour);
+    let h24 = hour12;
+    if (!isAm && hour12 !== 12) h24 = hour12 + 12;
+    if (isAm && hour12 === 12) h24 = 0;
+    onComplete(h24, minute);
     navigate('/');
   };
-
-  const displayHour = hour === 0 ? 12 : hour > 12 ? hour - 12 : hour;
-  const ampm = hour < 12 ? '오전' : '오후';
 
   return (
     <div className="min-h-screen bg-surface flex flex-col relative">
       <TopAppBar title="날씨 알림" showBack />
 
-      <main className="flex-1 px-8 pt-28 pb-32 flex flex-col">
+      <main className="flex-1 px-8 pt-32 pb-32 flex flex-col">
         {/* Hero */}
-        <section className="mb-12">
+        <section className="mb-10">
           <h2 className="text-[28px] font-bold leading-tight tracking-tight text-on-surface mb-3 font-headline">
             몇 시에 알려드릴까요?
           </h2>
@@ -37,39 +39,70 @@ export default function OnboardingTimePage({ selectedRegion, onComplete }: Props
 
         {/* Time Picker */}
         <section className="flex-1 flex flex-col justify-center">
-          <div className="bg-surface-container-low rounded-[2.5rem] p-12 flex flex-col items-center justify-center space-y-4">
-            <div className="flex items-baseline space-x-3">
-              <select
-                value={hour}
-                onChange={(e) => setHour(parseInt(e.target.value, 10))}
-                className="text-[56px] font-bold tracking-tighter text-on-surface bg-transparent border-none outline-none text-center appearance-none cursor-pointer"
+          <div className="bg-surface-container-low rounded-[2.5rem] p-10 flex flex-col items-center justify-center gap-6">
+            {/* AM/PM Toggle */}
+            <div className="flex bg-surface-container-highest rounded-full p-1 gap-1">
+              <button
+                onClick={() => setIsAm(true)}
+                className={`px-6 py-2.5 rounded-full text-[17px] font-bold transition-all ${
+                  isAm
+                    ? 'bg-primary text-on-primary shadow-sm'
+                    : 'text-on-surface-variant'
+                }`}
               >
-                {Array.from({ length: 24 }, (_, i) => (
-                  <option key={i} value={i}>
-                    {String(i === 0 ? 12 : i > 12 ? i - 12 : i).padStart(2, '0')}
+                오전
+              </button>
+              <button
+                onClick={() => setIsAm(false)}
+                className={`px-6 py-2.5 rounded-full text-[17px] font-bold transition-all ${
+                  !isAm
+                    ? 'bg-primary text-on-primary shadow-sm'
+                    : 'text-on-surface-variant'
+                }`}
+              >
+                오후
+              </button>
+            </div>
+
+            {/* Hour : Minute */}
+            <div className="flex items-center gap-3">
+              <select
+                value={hour12}
+                onChange={(e) => setHour12(parseInt(e.target.value, 10))}
+                className="text-[52px] font-bold tracking-tighter text-on-surface bg-transparent border-none outline-none text-center appearance-none cursor-pointer w-24"
+              >
+                {Array.from({ length: 12 }, (_, i) => i + 1).map((h) => (
+                  <option key={h} value={h}>
+                    {String(h).padStart(2, '0')}
                   </option>
                 ))}
               </select>
-              <span className="text-[48px] font-bold text-outline-variant">:</span>
-              <span className="text-[56px] font-bold tracking-tighter text-on-surface">00</span>
-            </div>
-            <div className="px-6 py-2 bg-surface-container-highest rounded-full">
-              <span className="text-primary font-bold text-lg">{ampm}</span>
+              <span className="text-[44px] font-bold text-outline-variant mb-1">:</span>
+              <select
+                value={minute}
+                onChange={(e) => setMinute(parseInt(e.target.value, 10))}
+                className="text-[52px] font-bold tracking-tighter text-on-surface bg-transparent border-none outline-none text-center appearance-none cursor-pointer w-24"
+              >
+                {[0, 10, 20, 30, 40, 50].map((m) => (
+                  <option key={m} value={m}>
+                    {String(m).padStart(2, '0')}
+                  </option>
+                ))}
+              </select>
             </div>
           </div>
 
           {/* Info Card */}
-          <div className="mt-8 relative overflow-hidden rounded-xl h-24 bg-surface-container-lowest flex items-center px-6">
+          <div className="mt-8 relative overflow-hidden rounded-xl bg-surface-container-lowest flex items-center px-6 py-5">
             <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mr-4">
               <Icon name="light_mode" className="text-primary" />
             </div>
             <div>
-              <p className="text-sm font-semibold text-on-surface">기상 직후 알림</p>
-              <p className="text-xs text-on-surface-variant">
-                비가 오거나 기온이 급변할 때 알려드려요.
+              <p className="text-[16px] font-semibold text-on-surface">기상 직후 알림</p>
+              <p className="text-[14px] text-on-surface-variant mt-0.5">
+                비가 오거나 기온이 급변할 때 알려드려요
               </p>
             </div>
-            <div className="absolute -right-4 -bottom-4 w-20 h-20 bg-primary/5 rounded-full blur-2xl"></div>
           </div>
         </section>
       </main>

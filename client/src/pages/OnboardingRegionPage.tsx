@@ -22,9 +22,9 @@ export default function OnboardingRegionPage({ onSelectRegion }: Props) {
     <div className="min-h-screen bg-surface flex flex-col relative">
       <TopAppBar title="날씨 알림" showBack />
 
-      <main className="flex-1 px-8 pt-28 pb-32 flex flex-col">
+      <main className="flex-1 px-8 pt-32 pb-32 flex flex-col">
         {/* Hero */}
-        <section className="mb-12">
+        <section className="mb-10">
           <h2 className="text-[28px] font-bold leading-tight tracking-tight text-on-surface mb-3 font-headline">
             어느 지역 날씨를
             <br />
@@ -43,7 +43,7 @@ export default function OnboardingRegionPage({ onSelectRegion }: Props) {
               className="absolute left-4 text-outline group-focus-within:text-primary transition-colors"
             />
             <input
-              className="w-full bg-surface-container-high border-none rounded-full py-4 pl-12 pr-6 text-on-surface placeholder:text-outline focus:ring-2 focus:ring-primary/10 focus:bg-surface-container-lowest transition-all duration-300 outline-none text-[16px]"
+              className="w-full bg-surface-container-high border-none rounded-full py-4 pl-12 pr-6 text-on-surface text-[17px] placeholder:text-outline focus:ring-2 focus:ring-primary/10 focus:bg-surface-container-lowest transition-all duration-300 outline-none"
               placeholder="지역명으로 검색"
               type="text"
               value={query}
@@ -56,7 +56,7 @@ export default function OnboardingRegionPage({ onSelectRegion }: Props) {
         {/* Region List — 검색 시에만 표시 */}
         {query.length > 0 && (
           <section className="flex-1">
-            <h3 className="font-bold text-on-surface-variant text-sm tracking-wide mb-4">
+            <h3 className="font-bold text-on-surface-variant text-[15px] tracking-wide mb-4">
               검색 결과
             </h3>
 
@@ -73,7 +73,7 @@ export default function OnboardingRegionPage({ onSelectRegion }: Props) {
                       className="text-on-surface-variant group-hover:text-primary transition-colors"
                     />
                   </div>
-                  <p className="font-bold text-on-surface text-base flex-1">
+                  <p className="font-bold text-on-surface text-[17px] flex-1">
                     {region.name}
                   </p>
                   <Icon name="chevron_right" className="text-outline text-lg" />
@@ -81,7 +81,7 @@ export default function OnboardingRegionPage({ onSelectRegion }: Props) {
               ))}
 
               {results.length === 0 && (
-                <div className="text-center py-8 text-outline">
+                <div className="text-center py-8 text-outline text-[16px]">
                   검색 결과가 없습니다
                 </div>
               )}
@@ -95,7 +95,7 @@ export default function OnboardingRegionPage({ onSelectRegion }: Props) {
             <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mb-4">
               <Icon name="location_on" className="text-primary text-2xl" />
             </div>
-            <p className="text-on-surface-variant text-sm text-center">
+            <p className="text-on-surface-variant text-[16px] text-center">
               시/군/구 이름을 검색해 주세요
             </p>
           </section>

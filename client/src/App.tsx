@@ -23,7 +23,7 @@ export default function App() {
           element={
             <OnboardingTimePage
               selectedRegion={selectedRegion}
-              onComplete={(hour) => saveConfig(selectedRegion, hour)}
+              onComplete={(hour, minute) => saveConfig(selectedRegion, hour, minute)}
             />
           }
         />
@@ -36,7 +36,7 @@ export default function App() {
     <Routes>
       <Route
         path="/"
-        element={<MainPage location={config!.location} alarmHour={config!.alarmHour} />}
+        element={<MainPage location={config!.location} alarmHour={config!.alarmHour} alarmMinute={config!.alarmMinute} />}
       />
       <Route
         path="/settings"
@@ -44,6 +44,7 @@ export default function App() {
           <SettingsPage
             location={config!.location}
             alarmHour={config!.alarmHour}
+            alarmMinute={config!.alarmMinute}
             onChangeLocation={updateLocation}
             onChangeAlarmHour={updateAlarmHour}
           />
