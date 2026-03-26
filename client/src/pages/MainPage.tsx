@@ -19,10 +19,9 @@ export default function MainPage({ location, alarmHour }: Props) {
   const displayHour = alarmHour === 0 ? 12 : alarmHour > 12 ? alarmHour - 12 : alarmHour;
 
   return (
-    <div className="min-h-screen bg-surface relative overflow-hidden pb-24">
+    <div className="min-h-screen bg-surface relative pb-24">
       <TopAppBar
         title="날씨 알림"
-        showBack
         trailing={
           <button
             onClick={() => navigate('/settings')}
@@ -33,7 +32,7 @@ export default function MainPage({ location, alarmHour }: Props) {
         }
       />
 
-      <main className="mt-16 px-6 pt-4">
+      <main className="pt-20 px-6">
         {/* Location Bar */}
         <div className="flex items-center gap-1.5 py-2.5 px-4 bg-surface-container-low rounded-full w-fit mb-6">
           <Icon name="location_on" className="text-sm text-outline" />
