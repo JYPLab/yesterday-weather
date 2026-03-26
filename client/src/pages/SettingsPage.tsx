@@ -67,7 +67,7 @@ export default function SettingsPage({
     return (
       <div className="min-h-screen bg-surface flex flex-col">
         <TopAppBar title="알림 시간 변경" showBack onBack={() => setEditingField(null)} />
-        <div className="pt-24 px-8 flex-1 flex flex-col items-center justify-center">
+        <div className="pt-20 px-8 flex-1 flex flex-col items-center justify-center">
           <div className="bg-surface-container-low rounded-[2.5rem] p-12 flex flex-col items-center space-y-4">
             <select
               value={alarmHour}
@@ -88,10 +88,10 @@ export default function SettingsPage({
 
   // Main settings screen
   return (
-    <div className="min-h-screen bg-surface flex flex-col relative overflow-hidden">
+    <div className="min-h-screen bg-surface flex flex-col relative">
       <TopAppBar title="설정" showBack onBack={() => navigate('/')} />
 
-      <main className="flex-1 mt-16 px-6 pb-24">
+      <main className="flex-1 pt-20 px-6 pb-24">
         {/* Settings Section */}
         <section className="mt-8 space-y-2">
           <h2 className="text-on-surface-variant font-headline font-bold text-xs uppercase tracking-widest px-1 mb-4">

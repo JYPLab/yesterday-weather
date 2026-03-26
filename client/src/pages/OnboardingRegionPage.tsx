@@ -19,10 +19,10 @@ export default function OnboardingRegionPage({ onSelectRegion }: Props) {
   };
 
   return (
-    <div className="min-h-screen bg-surface flex flex-col relative overflow-hidden">
+    <div className="min-h-screen bg-surface flex flex-col relative">
       <TopAppBar title="날씨 알림" showBack />
 
-      <main className="flex-1 px-8 pt-24 pb-32 flex flex-col">
+      <main className="flex-1 px-8 pt-20 pb-32 flex flex-col">
         {/* Hero */}
         <section className="mb-12">
           <h2 className="text-[28px] font-bold leading-tight tracking-tight text-on-surface mb-3 font-headline">
