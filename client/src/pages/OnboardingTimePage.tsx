@@ -26,7 +26,7 @@ export default function OnboardingTimePage({ selectedRegion, onComplete }: Props
     <div className="min-h-screen bg-surface flex flex-col relative">
       <TopAppBar title="날씨 알림" showBack />
 
-      <main className="flex-1 px-8 pt-32 pb-32 flex flex-col">
+      <main className="flex-1 px-8 pt-4 pb-32 flex flex-col">
         {/* Hero */}
         <section className="mb-10">
           <h2 className="text-[28px] font-bold leading-tight tracking-tight text-on-surface mb-3 font-headline">
