@@ -126,9 +126,6 @@ export default function MainPage({ location, alarmHour, alarmMinute }: Props) {
               <p className="text-[15px] text-outline font-medium tracking-tight">
                 {ampm} {displayHour}:{displayMinute} 날씨 기준
               </p>
-              <p className="text-[13px] text-outline-variant mt-1">
-                샘플 데이터 (서버 연결 시 실제 날씨 표시)
-              </p>
             </footer>
           </>
         )}
