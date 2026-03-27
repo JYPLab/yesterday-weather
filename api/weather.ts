@@ -518,7 +518,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     const yesterdayStr = formatDate(addDays(now, -1));
 
     const todayBase = getLatestBase(now);
-    const yesterdayBase = { baseDate: formatDate(addDays(now, -1)), baseTime: '2300' };
+    const yesterdayBase = { baseDate: formatDate(addDays(now, -2)), baseTime: '2300' };
 
     const [todayItems, yesterdayItems] = await Promise.all([
       fetchForecast(coords.nx, coords.ny, todayBase.baseDate, todayBase.baseTime),

@@ -56,8 +56,8 @@ function getLatestBase(now: Date): { baseDate: string; baseTime: string } {
  * 어제 날짜의 가장 늦은 예보(2300)를 사용하면 어제 하루치 데이터가 모두 포함
  */
 function getYesterdayBase(now: Date): { baseDate: string; baseTime: string } {
-  const yesterday = addDays(now, -1);
-  return { baseDate: formatDate(yesterday), baseTime: '2300' };
+  const twoDaysAgo = addDays(now, -2);
+  return { baseDate: formatDate(twoDaysAgo), baseTime: '2300' };
 }
 
 async function getWeatherForDate(
