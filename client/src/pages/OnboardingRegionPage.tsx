@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { searchRegions } from 'yesterday-weather-shared';
+import { searchRegions, regionKey } from 'yesterday-weather-shared';
 import TopAppBar from '../components/TopAppBar';
 import Icon from '../components/Icon';
 
@@ -13,8 +13,8 @@ export default function OnboardingRegionPage({ onSelectRegion }: Props) {
   const navigate = useNavigate();
   const results = useMemo(() => searchRegions(query), [query]);
 
-  const handleSelect = (region: string) => {
-    onSelectRegion(region);
+  const handleSelect = (key: string) => {
+    onSelectRegion(key);
     navigate('/onboarding/time');
   };
 
@@ -44,7 +44,7 @@ export default function OnboardingRegionPage({ onSelectRegion }: Props) {
             />
             <input
               className="w-full bg-surface-container-high border-none rounded-full py-4 pl-12 pr-6 text-on-surface text-[17px] placeholder:text-outline focus:ring-2 focus:ring-primary/10 focus:bg-surface-container-lowest transition-all duration-300 outline-none"
-              placeholder="지역명으로 검색"
+              placeholder="시/도 또는 시군구 이름으로 검색"
               type="text"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
@@ -61,24 +61,28 @@ export default function OnboardingRegionPage({ onSelectRegion }: Props) {
             </h3>
 
             <div className="space-y-3">
-              {results.map((region) => (
-                <div
-                  key={region.name}
-                  onClick={() => handleSelect(region.name)}
-                  className="group flex items-center gap-4 p-4 rounded-xl bg-surface-container-lowest hover:bg-surface-container-low transition-all duration-200 active:scale-[0.98] cursor-pointer"
-                >
-                  <div className="w-10 h-10 rounded-lg bg-surface-container-highest flex items-center justify-center">
-                    <Icon
-                      name="location_on"
-                      className="text-on-surface-variant group-hover:text-primary transition-colors"
-                    />
+              {results.map((region) => {
+                const key = regionKey(region);
+                return (
+                  <div
+                    key={key}
+                    onClick={() => handleSelect(key)}
+                    className="group flex items-center gap-4 p-4 rounded-xl bg-surface-container-lowest hover:bg-surface-container-low transition-all duration-200 active:scale-[0.98] cursor-pointer"
+                  >
+                    <div className="w-10 h-10 rounded-lg bg-surface-container-highest flex items-center justify-center">
+                      <Icon
+                        name="location_on"
+                        className="text-on-surface-variant group-hover:text-primary transition-colors"
+                      />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="font-bold text-on-surface text-[17px]">{region.name}</p>
+                      <p className="text-on-surface-variant text-[13px] mt-0.5">{region.sido}</p>
+                    </div>
+                    <Icon name="chevron_right" className="text-outline text-lg" />
                   </div>
-                  <p className="font-bold text-on-surface text-[17px] flex-1">
-                    {region.name}
-                  </p>
-                  <Icon name="chevron_right" className="text-outline text-lg" />
-                </div>
-              ))}
+                );
+              })}
 
               {results.length === 0 && (
                 <div className="text-center py-8 text-outline text-[16px]">
