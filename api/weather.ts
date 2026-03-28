@@ -351,7 +351,7 @@ const TEMP_EMOJI: Record<string, string> = {
 };
 const WIND_EMOJI = '💨';
 const RAIN_EMOJI = '🌧️';
-const SNOW_EMOJI = '❄️';
+const SNOW_EMOJI = '🌨️';
 
 function getTempKey(delta: number): string {
   if (delta <= -5) return 'MUCH_COLDER';

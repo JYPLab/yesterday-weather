@@ -1,4 +1,5 @@
 import { TEMP_EMOJI, CONDITION_EMOJI, TEMP_TEXT, TEMP_TEXT_CONNECTIVE } from '../constants/emoji.js';
+
 import type { Delta } from '../types/weather.js';
 
 type TempLevel = 'MUCH_COLDER' | 'COLDER' | 'SIMILAR' | 'WARMER' | 'MUCH_WARMER';
@@ -37,9 +38,9 @@ export function getTempText(feelsLikeDelta: number): string {
 export function buildEmoji(delta: Delta): string {
   let emoji = getTempEmoji(delta.feelsLikeDelta);
 
-  if (delta.newSnow) emoji += '⛄️';
-  else if (delta.newRain) emoji += '☂️';
-  else if (delta.newWind) emoji += '🌬️';
+  if (delta.newSnow) emoji += CONDITION_EMOJI.SNOW;
+  else if (delta.newRain) emoji += CONDITION_EMOJI.RAIN;
+  else if (delta.newWind) emoji += CONDITION_EMOJI.WIND;
 
   return emoji;
 }

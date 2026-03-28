@@ -65,17 +65,17 @@ describe('buildEmoji', () => {
 
   it('adds snow emoji', () => {
     const delta = { ...baseDelta, feelsLikeDelta: -6, newSnow: true };
-    expect(buildEmoji(delta)).toBe('❄️⛄️');
+    expect(buildEmoji(delta)).toBe('❄️🌨️');
   });
 
   it('adds rain emoji', () => {
     const delta = { ...baseDelta, feelsLikeDelta: 0, newRain: true };
-    expect(buildEmoji(delta)).toBe('😊☂️');
+    expect(buildEmoji(delta)).toBe('😊🌧️');
   });
 
   it('adds wind emoji', () => {
     const delta = { ...baseDelta, feelsLikeDelta: -6, newWind: true };
-    expect(buildEmoji(delta)).toBe('❄️🌬️');
+    expect(buildEmoji(delta)).toBe('❄️💨');
   });
 
   it('prioritizes snow over rain and wind', () => {
@@ -86,7 +86,7 @@ describe('buildEmoji', () => {
       newRain: true,
       newWind: true,
     };
-    expect(buildEmoji(delta)).toBe('🥶⛄️');
+    expect(buildEmoji(delta)).toBe('🥶🌨️');
   });
 
   it('prioritizes rain over wind', () => {
@@ -96,7 +96,7 @@ describe('buildEmoji', () => {
       newRain: true,
       newWind: true,
     };
-    expect(buildEmoji(delta)).toBe('😊☂️');
+    expect(buildEmoji(delta)).toBe('😊🌧️');
   });
 });
 
@@ -157,7 +157,7 @@ describe('buildPushText', () => {
     };
     const text = buildPushText(delta);
     expect(text).toContain('❄️');
-    expect(text).toContain('🌬️');
+    expect(text).toContain('💨');
     expect(text).toContain('바람 강해요');
     expect(text).toContain('최저 -5도');
   });

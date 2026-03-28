@@ -7,9 +7,9 @@ export const TEMP_EMOJI = {
 } as const;
 
 export const CONDITION_EMOJI = {
-  RAIN: '☂️',
-  SNOW: '⛄️',
-  WIND: '🌬️',
+  RAIN: '🌧️',
+  SNOW: '🌨️',
+  WIND: '💨',
 } as const;
 
 // 단독 사용: "~요" 붙여서 "많이 추워요"
