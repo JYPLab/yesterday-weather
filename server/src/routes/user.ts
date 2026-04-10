@@ -1,6 +1,17 @@
-import { Router } from 'express';
+import { Router, Request, Response, NextFunction } from 'express';
 import { pool } from '../db/pool.js';
 import { findRegion } from 'yesterday-weather-shared';
+
+// Basic Auth 검증 미들웨어
+function requireBasicAuth(req: Request, res: Response, next: NextFunction): void {
+  const auth = req.headers['authorization'];
+  const expected = `Basic ${Buffer.from(process.env.DISCONNECT_BASIC_AUTH ?? '').toString('base64')}`;
+  if (!auth || auth !== expected) {
+    res.status(401).json({ error: 'Unauthorized' });
+    return;
+  }
+  next();
+}
 
 const router = Router();
 
@@ -61,6 +72,23 @@ router.get('/user-config/:userId', async (req, res) => {
   } catch (error) {
     console.error('User config error:', error);
     res.status(500).json({ error: '설정을 불러올 수 없습니다' });
+  }
+});
+
+// 토스 연결 끊기 콜백 - 회원 탈퇴 시 유저 데이터 삭제
+router.post('/user-disconnect', requireBasicAuth, async (req, res) => {
+  try {
+    const { userId } = req.body;
+    if (!userId) {
+      res.status(400).json({ error: 'userId는 필수입니다' });
+      return;
+    }
+
+    await pool.query('DELETE FROM user_config WHERE user_id = $1', [userId]);
+    res.json({ success: true });
+  } catch (error) {
+    console.error('Disconnect callback error:', error);
+    res.status(500).json({ error: '데이터 삭제에 실패했습니다' });
   }
 });
 
