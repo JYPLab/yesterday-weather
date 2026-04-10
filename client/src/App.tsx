@@ -5,6 +5,7 @@ import OnboardingRegionPage from './pages/OnboardingRegionPage';
 import OnboardingTimePage from './pages/OnboardingTimePage';
 import MainPage from './pages/MainPage';
 import SettingsPage from './pages/SettingsPage';
+import TermsPage from './pages/TermsPage';
 
 export default function App() {
   const { config, isOnboarded, saveConfig, updateLocation, updateAlarmHour } =
@@ -27,6 +28,7 @@ export default function App() {
             />
           }
         />
+        <Route path="/terms" element={<TermsPage />} />
         <Route path="*" element={<Navigate to="/onboarding/region" replace />} />
       </Routes>
     );
@@ -50,6 +52,7 @@ export default function App() {
           />
         }
       />
+      <Route path="/terms" element={<TermsPage />} />
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );
