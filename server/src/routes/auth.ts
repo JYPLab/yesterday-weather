@@ -1,8 +1,18 @@
 import { Router } from 'express';
+import { Agent, fetch as undiciFetch } from 'undici';
 
 const router = Router();
 
 const TOSS_API_BASE = 'https://api.toss.im';
+
+function createMtlsAgent(): Agent {
+  const cert = process.env.TOSS_MTLS_CERT;
+  const key = process.env.TOSS_MTLS_KEY;
+  if (!cert || !key) {
+    throw new Error('TOSS_MTLS_CERT / TOSS_MTLS_KEY 환경변수가 없습니다');
+  }
+  return new Agent({ connect: { cert, key } });
+}
 
 router.post('/auth/toss-login', async (req, res) => {
   try {
@@ -13,24 +23,22 @@ router.post('/auth/toss-login', async (req, res) => {
       return;
     }
 
-    const clientId = process.env.TOSS_CLIENT_ID;
-    const clientSecret = process.env.TOSS_CLIENT_SECRET;
-
-    if (!clientId || !clientSecret) {
-      console.error('TOSS_CLIENT_ID / TOSS_CLIENT_SECRET 환경변수가 없습니다');
-      res.status(500).json({ error: '서버 설정 오류' });
+    let agent: Agent;
+    try {
+      agent = createMtlsAgent();
+    } catch (e) {
+      console.error(e);
+      res.status(500).json({ error: '서버 설정 오류 (mTLS 인증서 없음)' });
       return;
     }
 
     // 1. 인가 코드 → 액세스 토큰
-    const tokenRes = await fetch(
+    const tokenRes = await undiciFetch(
       `${TOSS_API_BASE}/api-partner/v1/apps-in-toss/user/oauth2/generate-token`,
       {
+        dispatcher: agent,
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Basic ${Buffer.from(`${clientId}:${clientSecret}`).toString('base64')}`,
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ authorizationCode, referrer }),
       }
     );
@@ -43,10 +51,11 @@ router.post('/auth/toss-login', async (req, res) => {
 
     const { accessToken } = (await tokenRes.json()) as { accessToken: string };
 
-    // 2. 액세스 토큰 → 유저 정보
-    const userRes = await fetch(
+    // 2. 액세스 토큰 → 유저 정보 (userKey)
+    const userRes = await undiciFetch(
       `${TOSS_API_BASE}/api-partner/v1/apps-in-toss/user/oauth2/login-me`,
       {
+        dispatcher: agent,
         headers: { Authorization: `Bearer ${accessToken}` },
       }
     );
@@ -58,7 +67,6 @@ router.post('/auth/toss-login', async (req, res) => {
     }
 
     const { userKey } = (await userRes.json()) as { userKey: string };
-
     res.json({ userKey });
   } catch (error) {
     console.error('Toss login error:', error);
