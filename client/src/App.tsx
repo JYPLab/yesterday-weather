@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
+import { appLogin } from '@apps-in-toss/web-bridge';
 import { useUserConfig } from './hooks/useUserConfig';
+import { tossLogin } from './api/client';
 import OnboardingRegionPage from './pages/OnboardingRegionPage';
 import OnboardingTimePage from './pages/OnboardingTimePage';
 import MainPage from './pages/MainPage';
@@ -11,6 +13,21 @@ export default function App() {
   const { config, isOnboarded, saveConfig, updateLocation, updateAlarmHour } =
     useUserConfig();
   const [selectedRegion, setSelectedRegion] = useState('');
+
+  const handleOnboardingComplete = async (hour: number, minute: number) => {
+    try {
+      const { authorizationCode, referrer } = await appLogin();
+      const userKey = await tossLogin(authorizationCode, referrer);
+      if (userKey) {
+        saveConfig(userKey, selectedRegion, hour, minute);
+        return;
+      }
+    } catch (e) {
+      console.warn('Toss login failed, saving without userId:', e);
+    }
+    // 로그인 실패 시에도 로컬 저장은 허용 (개발 환경 등)
+    saveConfig('anonymous', selectedRegion, hour, minute);
+  };
 
   if (!isOnboarded) {
     return (
@@ -24,7 +41,7 @@ export default function App() {
           element={
             <OnboardingTimePage
               selectedRegion={selectedRegion}
-              onComplete={(hour, minute) => saveConfig(selectedRegion, hour, minute)}
+              onComplete={handleOnboardingComplete}
             />
           }
         />

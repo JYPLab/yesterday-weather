@@ -28,7 +28,9 @@ async function start() {
 
     try {
       const userRoutes = (await import('./routes/user.js')).default;
+      const authRoutes = (await import('./routes/auth.js')).default;
       app.use('/api', userRoutes);
+      app.use('/api', authRoutes);
 
       const { startScheduler } = await import('./cron/scheduler.js');
       startScheduler();

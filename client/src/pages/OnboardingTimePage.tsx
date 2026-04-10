@@ -5,7 +5,7 @@ import Icon from '../components/Icon';
 
 interface Props {
   selectedRegion: string;
-  onComplete: (hour: number, minute: number) => void;
+  onComplete: (hour: number, minute: number) => Promise<void>;
 }
 
 export default function OnboardingTimePage({ selectedRegion, onComplete }: Props) {

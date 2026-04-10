@@ -41,6 +41,24 @@ export async function saveUserConfig(config: {
   }
 }
 
+export async function tossLogin(
+  authorizationCode: string,
+  referrer: 'DEFAULT' | 'SANDBOX'
+): Promise<string | null> {
+  try {
+    const res = await fetch(`${BASE}/auth/toss-login`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ authorizationCode, referrer }),
+    });
+    if (!res.ok) throw new Error();
+    const { userKey } = await res.json();
+    return userKey as string;
+  } catch {
+    return null;
+  }
+}
+
 export async function getUserConfig(userId: string): Promise<UserConfig | null> {
   try {
     const res = await fetch(`${BASE}/user-config/${userId}`);

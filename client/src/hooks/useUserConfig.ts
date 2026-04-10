@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
+import { saveUserConfig } from '../api/client';
 
 interface LocalConfig {
+  userId: string;
   location: string;
   alarmHour: number;
   alarmMinute: number;
@@ -31,17 +33,25 @@ export function useUserConfig() {
     if (config) persistConfig(config);
   }, [config]);
 
-  const saveConfig = (location: string, alarmHour: number, alarmMinute: number = 0) => {
-    const newConfig: LocalConfig = { location, alarmHour, alarmMinute, onboarded: true };
+  const saveConfig = (userId: string, location: string, alarmHour: number, alarmMinute: number = 0) => {
+    const newConfig: LocalConfig = { userId, location, alarmHour, alarmMinute, onboarded: true };
     setConfig(newConfig);
+    // 서버에도 동기화
+    saveUserConfig({ userId, location, alarmHour });
   };
 
   const updateLocation = (location: string) => {
-    if (config) setConfig({ ...config, location });
+    if (!config) return;
+    const updated = { ...config, location };
+    setConfig(updated);
+    saveUserConfig({ userId: config.userId, location, alarmHour: config.alarmHour });
   };
 
   const updateAlarmHour = (alarmHour: number, alarmMinute: number = 0) => {
-    if (config) setConfig({ ...config, alarmHour, alarmMinute });
+    if (!config) return;
+    const updated = { ...config, alarmHour, alarmMinute };
+    setConfig(updated);
+    saveUserConfig({ userId: config.userId, location: config.location, alarmHour });
   };
 
   const isOnboarded = config?.onboarded ?? false;
