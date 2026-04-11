@@ -21,11 +21,7 @@ export function startScheduler(): void {
             user.nx,
             user.ny
           );
-          await sendPush(
-            user.user_id,
-            '오늘 날씨',
-            comparison.delta.daily
-          );
+          await sendPush(user.user_id, comparison.delta.daily);
         } catch (err) {
           console.error(
             `[CRON] Push failed for ${user.user_id}:`,
