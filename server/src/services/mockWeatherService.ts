@@ -26,11 +26,13 @@ const MOCK_SCENARIOS: Record<string, { today: SessionWeather; yesterday: Session
       morning: makeWeather(8, 2, 55, 10, false),
       afternoon: makeWeather(14, 3, 50, 10, false),
       daily: makeWeather(11, 2.5, 52, 10, false),
+      currentTemp: null,
     },
     today: {
       morning: makeWeather(3, 6, 60, 70, false),
       afternoon: makeWeather(9, 5, 55, 60, false),
       daily: makeWeather(6, 5.5, 58, 70, false),
+      currentTemp: null,
     },
   },
   '부산': {
@@ -38,11 +40,13 @@ const MOCK_SCENARIOS: Record<string, { today: SessionWeather; yesterday: Session
       morning: makeWeather(10, 3, 60, 20, false),
       afternoon: makeWeather(15, 2, 55, 10, false),
       daily: makeWeather(12, 2.5, 58, 20, false),
+      currentTemp: null,
     },
     today: {
       morning: makeWeather(12, 2, 65, 10, false),
       afternoon: makeWeather(18, 1.5, 50, 5, false),
       daily: makeWeather(15, 1.8, 58, 10, false),
+      currentTemp: null,
     },
   },
   '대전': {
@@ -50,11 +54,13 @@ const MOCK_SCENARIOS: Record<string, { today: SessionWeather; yesterday: Session
       morning: makeWeather(7, 2, 50, 10, false),
       afternoon: makeWeather(13, 2, 45, 5, false),
       daily: makeWeather(10, 2, 48, 10, false),
+      currentTemp: null,
     },
     today: {
       morning: makeWeather(2, 7, 70, 80, true),
       afternoon: makeWeather(5, 6, 65, 70, true),
       daily: makeWeather(3, 6.5, 68, 80, true),
+      currentTemp: null,
     },
   },
 };

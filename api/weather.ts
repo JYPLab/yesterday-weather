@@ -423,7 +423,7 @@ interface HourlyData {
   hour: number; tmp: number; reh: number; wsd: number; pop: number; pty: number;
 }
 
-function transformForecast(items: KmaItem[], targetDate: string): SessionWeather {
+function transformForecast(items: KmaItem[], targetDate: string, currentHour?: number): SessionWeather {
   const grouped = new Map<string, Map<string, string>>();
   for (const item of items) {
     const key = `${item.fcstDate}_${item.fcstTime}`;
@@ -473,10 +473,18 @@ function transformForecast(items: KmaItem[], targetDate: string): SessionWeather
   const morning = allHourly.filter(h => h.hour >= 6 && h.hour < 12);
   const afternoon = allHourly.filter(h => h.hour >= 12 && h.hour < 18);
 
+  // 현재 시각 기온: 정확히 일치하는 시간대, 없으면 가장 가까운 이전 시간대
+  let currentTemp: number | null = null;
+  if (currentHour !== undefined) {
+    const sorted = allHourly.filter(h => h.hour <= currentHour).sort((a, b) => b.hour - a.hour);
+    if (sorted.length > 0) currentTemp = sorted[0].tmp;
+  }
+
   return {
     morning: aggregate(morning, null, null),
     afternoon: aggregate(afternoon, null, null),
     daily: aggregate(allHourly, tmn, tmx),
+    currentTemp,
   };
 }
 
@@ -534,7 +542,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       fetchForecast(coords.nx, coords.ny, yesterdayBase.baseDate, yesterdayBase.baseTime),
     ]);
 
-    const today = transformForecast(todayItems, todayStr);
+    const today = transformForecast(todayItems, todayStr, now.getHours());
     const yesterday = transformForecast(yesterdayItems, yesterdayStr);
 
     const delta = {

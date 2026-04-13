@@ -120,7 +120,8 @@ function aggregateWeather(
  */
 export function transformForecast(
   items: KmaItem[],
-  targetDate: string
+  targetDate: string,
+  currentHour?: number
 ): SessionWeather {
   const grouped = groupByHour(items);
   const allHourly: HourlyData[] = [];
@@ -139,9 +140,17 @@ export function transformForecast(
     (h) => h.hour >= 12 && h.hour < 18
   );
 
+  // 현재 시각 기온: 정확히 일치하는 시간대, 없으면 가장 가까운 이전 시간대
+  let currentTemp: number | null = null;
+  if (currentHour !== undefined) {
+    const sorted = allHourly.filter((h) => h.hour <= currentHour).sort((a, b) => b.hour - a.hour);
+    if (sorted.length > 0) currentTemp = sorted[0].tmp;
+  }
+
   return {
     morning: aggregateWeather(morning, null, null),
     afternoon: aggregateWeather(afternoon, null, null),
     daily: aggregateWeather(allHourly, tmn, tmx),
+    currentTemp,
   };
 }

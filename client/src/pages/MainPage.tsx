@@ -107,16 +107,25 @@ export default function MainPage({ location, alarmHour, alarmMinute }: Props) {
             {/* Hourly Grid */}
             <div className="grid grid-cols-3 gap-3 mb-10">
               {[
-                { label: '지금', temp: data.today.morning.temperature },
-                { label: '12시', temp: data.today.afternoon.temperature },
-                { label: '18시', temp: data.today.daily.tempMax },
+                {
+                  label: '지금',
+                  temp: data.today.currentTemp,
+                },
+                {
+                  label: '12시',
+                  temp: data.today.afternoon.temperature,
+                },
+                {
+                  label: '18시',
+                  temp: data.today.daily.tempMax,
+                },
               ].map(({ label, temp }) => (
                 <div key={label} className="bg-surface-container-low p-4 rounded-xl text-center">
                   <span className="text-[14px] font-bold text-outline block mb-2 tracking-wider">
                     {label}
                   </span>
                   <span className="text-[20px] font-extrabold text-on-surface">
-                    {temp === 0 ? '--' : `${Math.round(temp)}°C`}
+                    {temp == null || temp === 0 ? '--' : `${Math.round(temp)}°C`}
                   </span>
                 </div>
               ))}
@@ -129,7 +138,7 @@ export default function MainPage({ location, alarmHour, alarmMinute }: Props) {
               </p>
             </footer>
           </>
-        )}
+        )})()}
       </main>
 
       <BottomNav />

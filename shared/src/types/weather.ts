@@ -13,6 +13,7 @@ export interface SessionWeather {
   morning: WeatherData;   // 06~12시
   afternoon: WeatherData; // 12~18시
   daily: WeatherData;     // 하루 종합
+  currentTemp: number | null;  // 현재 시각 기온 (오늘만, 어제는 null)
 }
 
 export interface Delta {

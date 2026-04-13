@@ -65,15 +65,22 @@ async function getWeatherForDate(
   ny: number,
   targetDate: string,
   baseDate: string,
-  baseTime: string
+  baseTime: string,
+  currentHour?: number
 ): Promise<SessionWeather> {
-  const cached = await getCachedWeather(nx, ny, targetDate);
-  if (cached) return cached;
+  // currentHour가 있으면 오늘 날씨 → 매번 fresh fetch (currentTemp가 시각 의존적)
+  if (currentHour === undefined) {
+    const cached = await getCachedWeather(nx, ny, targetDate);
+    if (cached) return cached;
+  }
 
   const items = await getVilageFcst(nx, ny, baseDate, baseTime);
-  const result = transformForecast(items, targetDate);
+  const result = transformForecast(items, targetDate, currentHour);
 
-  await setCachedWeather(nx, ny, targetDate, result);
+  // 어제 날씨만 캐시 (currentHour 없는 경우)
+  if (currentHour === undefined) {
+    await setCachedWeather(nx, ny, targetDate, result);
+  }
   return result;
 }
 
@@ -89,7 +96,7 @@ export async function getWeatherComparison(
   const yesterdayBase = getYesterdayBase(now);
 
   const [todayWeather, yesterdayWeather] = await Promise.all([
-    getWeatherForDate(nx, ny, todayStr, todayBase.baseDate, todayBase.baseTime),
+    getWeatherForDate(nx, ny, todayStr, todayBase.baseDate, todayBase.baseTime, now.getHours()),
     getWeatherForDate(nx, ny, yesterdayStr, yesterdayBase.baseDate, yesterdayBase.baseTime),
   ]);
 
