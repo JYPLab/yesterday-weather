@@ -525,7 +525,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     const todayStr = formatDate(now);
     const yesterdayStr = formatDate(addDays(now, -1));
 
-    const todayBase = getLatestBase(now);
+    // 0200 기준: 하루치 전체(오전+오후) 데이터 포함 보장
+    const todayBase = { baseDate: todayStr, baseTime: '0200' };
     const yesterdayBase = { baseDate: formatDate(addDays(now, -1)), baseTime: '0200' };
 
     const [todayItems, yesterdayItems] = await Promise.all([
