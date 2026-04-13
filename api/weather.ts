@@ -505,6 +505,14 @@ function getLatestBase(now: Date): { baseDate: string; baseTime: string } {
 
 // ── Handler ──
 export default async function handler(req: VercelRequest, res: VercelResponse) {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+
+  if (req.method === 'OPTIONS') {
+    return res.status(200).end();
+  }
+
   const region = (req.query.region as string) || '서울';
   const coords = LOCATION_CODES[region];
 
@@ -543,6 +551,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       tempSuffix: buildTempSuffix(delta.daily),
     };
 
+    res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Cache-Control', 's-maxage=1800, stale-while-revalidate=3600');
     return res.status(200).json(result);
   } catch (err: any) {

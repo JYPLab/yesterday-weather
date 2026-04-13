@@ -1,7 +1,7 @@
 import type { WeatherComparison, UserConfig } from 'yesterday-weather-shared';
 import { getMockWeather } from './mockData';
 
-const BASE = import.meta.env.VITE_API_URL ?? '/api';
+const BASE = 'https://yesterday-weather-server.vercel.app/api';
 
 export async function getWeather(region: string): Promise<WeatherComparison> {
   try {
