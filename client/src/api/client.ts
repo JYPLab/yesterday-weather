@@ -1,7 +1,7 @@
 import type { WeatherComparison, UserConfig } from 'yesterday-weather-shared';
 import { getMockWeather } from './mockData';
 
-const BASE = '/api';
+const BASE = import.meta.env.VITE_API_URL ?? '/api';
 
 export async function getWeather(region: string): Promise<WeatherComparison> {
   try {
