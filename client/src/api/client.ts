@@ -3,15 +3,10 @@ import { getMockWeather } from './mockData';
 
 const BASE = 'https://yesterday-weather-server.vercel.app/api';
 
-export async function getWeather(region: string): Promise<WeatherComparison> {
-  try {
-    const res = await fetch(`${BASE}/weather?region=${encodeURIComponent(region)}`);
-    if (!res.ok) throw new Error();
-    return await res.json();
-  } catch {
-    // API 없으면 mock 데이터 사용
-    return getMockWeather(region);
-  }
+export async function getWeather(region: string): Promise<WeatherComparison | null> {
+  const res = await fetch(`${BASE}/weather?region=${encodeURIComponent(region)}`);
+  if (!res.ok) return null;
+  return res.json();
 }
 
 export async function getRegions(query: string = ''): Promise<Array<{ name: string; nx: number; ny: number }>> {

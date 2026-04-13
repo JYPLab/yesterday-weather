@@ -20,7 +20,11 @@ export function useWeather(region: string | null): UseWeatherResult {
     setError(null);
     try {
       const result = await getWeather(region);
-      setData(result);
+      if (result === null) {
+        setError('날씨 정보를 불러오지 못했습니다.');
+      } else {
+        setData(result);
+      }
     } catch (err) {
       setError((err as Error).message);
     } finally {

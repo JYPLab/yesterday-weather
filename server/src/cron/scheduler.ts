@@ -6,7 +6,8 @@ import { sendPush } from '../services/pushService.js';
 export function startScheduler(): void {
   // 매 정각: 해당 시간 알림 대상 유저에게 푸시 발송
   cron.schedule('0 * * * *', async () => {
-    const hour = new Date().getHours();
+    const kstNow = new Date(new Date().toLocaleString('en-US', { timeZone: 'Asia/Seoul' }));
+    const hour = kstNow.getHours();
     console.log(`[CRON] Running push job for hour ${hour}`);
 
     try {

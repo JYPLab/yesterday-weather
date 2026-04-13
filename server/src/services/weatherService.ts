@@ -81,7 +81,7 @@ export async function getWeatherComparison(
   nx: number,
   ny: number
 ): Promise<WeatherComparison> {
-  const now = new Date();
+  const now = new Date(new Date().toLocaleString('en-US', { timeZone: 'Asia/Seoul' }));
   const todayStr = formatDate(now);
   const yesterdayStr = formatDate(addDays(now, -1));
 

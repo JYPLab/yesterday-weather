@@ -61,7 +61,8 @@ export default function MainPage({ location, alarmHour, alarmMinute }: Props) {
           </div>
         )}
 
-        {data && (
+        {data && (() => {
+          return (
           <>
             {/* Hero Weather Card */}
             <section className="bg-[#E3F2FD] rounded-[2rem] p-8 mb-8 shadow-sm">
@@ -90,7 +91,7 @@ export default function MainPage({ location, alarmHour, alarmMinute }: Props) {
                       <span className="text-[15px] font-bold text-on-surface-variant">{label}</span>
                     </div>
                     <span className="text-on-surface font-bold text-[17px]">
-                      {Math.round(temp)}°C
+                      {temp === 0 ? '--' : `${Math.round(temp)}°C`}
                     </span>
                   </div>
                   <span className="text-on-surface-variant font-medium text-[15px]">
@@ -115,7 +116,7 @@ export default function MainPage({ location, alarmHour, alarmMinute }: Props) {
                     {label}
                   </span>
                   <span className="text-[20px] font-extrabold text-on-surface">
-                    {Math.round(temp)}°C
+                    {temp === 0 ? '--' : `${Math.round(temp)}°C`}
                   </span>
                 </div>
               ))}
